@@ -92,4 +92,18 @@ app.post("/repositories/:id/like", (req, res) => {
 
 });
 
+app.post("/repositories/:id/dislike", (req, res) => {
+  const { id } = req.params;
+
+  const verifyRepositoryExists = repositories.findIndex(repository => repository.id === id);
+  if(verifyRepositoryExists < 0) return res.status(400).json({message: 'repository not exists'});
+
+
+  if(repositories[verifyRepositoryExists].likes <= 0) return res.status(202).json({message: 'Negative likes are not possible'})
+  repositories[verifyRepositoryExists].likes -= 1;
+
+  return res.json(repositories[verifyRepositoryExists]);  
+
+});
+
 module.exports = app;
